@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Ionicons } from '@expo/vector-icons';
 import * as S from './styles';
 
 interface InputProps {
@@ -9,10 +9,14 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({ value, onChangeText }) => {
   return (
-    <S.Input 
-      placeholder="Pesquise aqui o seu imóvel dos sonhos" 
-      value={value} 
-      onChangeText={onChangeText} 
-    />
+    <S.InputContainer>
+      <Ionicons name="search" size={20} color="#000" style={{ marginRight: 8 }} />
+      <S.Input
+        placeholder="Inicie sua busca"
+        value={value}
+        onChangeText={onChangeText}
+        placeholderTextColor="#000"
+      />
+    </S.InputContainer>
   );
 };

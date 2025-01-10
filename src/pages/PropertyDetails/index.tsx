@@ -1,6 +1,9 @@
+import { Ionicons } from '@expo/vector-icons';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, Modal, View, Dimensions, StatusBar } from 'react-native';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import { 
@@ -11,13 +14,14 @@ import {
 } from '../../features/property/propertySlice';
 import * as S from './styles';
 import { mockPropertyImages } from '../../mocks/mockImages';
-import { Ionicons } from '@expo/vector-icons';
 
 type RouteParams = {
   PropertyDetails: {
     propertyId: string;
   };
 };
+
+const { width: screenWidth } = Dimensions.get('window');
 
 export default function PropertyDetails() {
   const route = useRoute<RouteProp<RouteParams, 'PropertyDetails'>>();
@@ -27,6 +31,8 @@ export default function PropertyDetails() {
   const error = useSelector(selectPropertyError);
   const navigation = useNavigation();
   const [showAdModal, setShowAdModal] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const propertyImages = property ? mockPropertyImages[property.id] : [];
 
   useEffect(() => {
     dispatch(fetchProperty(route.params.propertyId));
@@ -35,6 +41,10 @@ export default function PropertyDetails() {
   const getFirstFiveLines = (text: string) => {
     return text.split('\n').slice(0, 5).join('\n');
   };
+
+  const renderItem = ({ item }: { item: string }) => (
+    <S.CarouselImage source={{ uri: item }} resizeMode="cover" />
+  );
 
   if (status === 'loading') {
     return <ActivityIndicator size="large" color="#d7d7d7" />;
@@ -51,20 +61,31 @@ export default function PropertyDetails() {
   return (
     <>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-      <S.Container contentContainerStyle={{ paddingHorizontal: 0 }}>
-        <S.ImageContainer>
-          <S.PropertyImage
-            source={{ uri: mockPropertyImages[property.id as keyof typeof mockPropertyImages][0] }}
-            resizeMode="cover"
-          />
-          <S.BackButtonContainer>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <S.BackButton>
-                <Ionicons name="chevron-back-outline" size={20} color="#222222" />
-              </S.BackButton>
-            </TouchableOpacity>
-          </S.BackButtonContainer>
-        </S.ImageContainer>
+      <S.Container contentContainerStyle={{ paddingHorizontal: 0, paddingBottom: 80 }}>
+        <Swiper
+          style={{ height: screenWidth }}
+          loop={false}
+          onIndexChanged={(index) => setActiveSlide(index)}
+          activeDotColor="#fff"
+        >
+          {propertyImages.map((image, index) => (
+            <View key={index} style={{ position: 'relative' }}>
+              <S.CarouselImage source={{ uri: image }} resizeMode="cover" />
+              <S.PaginationContainer>
+                <S.PaginationText>
+                  {`${activeSlide + 1}/${propertyImages.length}`}
+                </S.PaginationText>
+              </S.PaginationContainer>
+            </View>
+          ))}
+        </Swiper>
+        <S.BackButtonContainer>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <S.BackButton>
+              <Ionicons name="chevron-back-outline" size={20} color="#222222" />
+            </S.BackButton>
+          </TouchableOpacity>
+        </S.BackButtonContainer>
         <S.ContentContainer>
           <S.Title>{property.dados.title}</S.Title>
           <S.Location>
@@ -143,23 +164,6 @@ export default function PropertyDetails() {
           </TouchableOpacity>
         </S.ContentContainer>
 
-        <S.PriceContainer>
-          {property.dados.business_type.includes('sale') && (
-            <S.Price>Venda: R$ {property.dados.prices.sale_price?.toLocaleString()}</S.Price>
-          )}
-          {property.dados.business_type.includes('rent') && (
-            <>
-              <S.Price>Aluguel: R$ {property.dados.prices.rent_price?.toLocaleString()}/mês</S.Price>
-              <Text style={{ fontSize: 14, color: '#666' }}>
-                Condomínio: R$ {property.dados.prices.condo_fee?.toLocaleString()}/mês
-              </Text>
-              <Text style={{ fontSize: 14, color: '#666' }}>
-                IPTU: R$ {property.dados.prices.property_tax?.toLocaleString()}/ano
-              </Text>
-            </>
-          )}
-        </S.PriceContainer>
-
         <Modal
           visible={showAdModal}
           transparent
@@ -181,6 +185,57 @@ export default function PropertyDetails() {
           </S.ModalOverlay>
         </Modal>
       </S.Container>
+
+      <SafeAreaView edges={['bottom']} style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: '#fff',
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        borderTopWidth: 1,
+        borderTopColor: '#ddd',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 5
+      }}>
+        <View>
+          {property.dados.business_type.includes('sale') && (
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+              Venda: R$ {property.dados.prices.sale_price?.toLocaleString()}
+            </Text>
+          )}
+          {property.dados.business_type.includes('rent') && (
+            <>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                Aluguel: R$ {property.dados.prices.rent_price?.toLocaleString()}/mês
+              </Text>
+              <Text style={{ fontSize: 14, color: '#666' }}>
+                Condomínio: R$ {property.dados.prices.condo_fee?.toLocaleString()}/mês
+              </Text>
+              <Text style={{ fontSize: 14, color: '#666' }}>
+                IPTU: R$ {property.dados.prices.property_tax?.toLocaleString()}/ano
+              </Text>
+            </>
+          )}
+        </View>
+        <TouchableOpacity style={{
+          backgroundColor: '#FF5A5F',
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          borderRadius: 5
+        }}>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+            RESERVE
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     </>
   );
 }

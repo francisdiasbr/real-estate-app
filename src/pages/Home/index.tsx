@@ -39,8 +39,6 @@ const HomeScreen = () => {
     <S.SafeArea>
       <S.Container>
         <S.SearchSection>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>🏡Pesquise aqui o seu imóvel dos sonhos</Text>
-          <Text>Ex: Casa ou apartamento de até 3 dormitórios no bairro Baixo Chiado. Estou disposto a pagar até 1200€/mês</Text>
           <Input 
             value={searchQuery}
             onChangeText={setSearchQuery}

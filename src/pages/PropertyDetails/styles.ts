@@ -22,8 +22,13 @@ export const BackButton = styled.View`
   elevation: 3;
 `;
 
+export const CarouselImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 export const ContentContainer = styled.View`
-  padding: 24px;
+  padding: 24px 24px 100px 24px;
 `;
 
 export const Container = styled.ScrollView`
@@ -173,3 +178,5 @@ export const Title = styled.Text`
   margin-bottom: 8px;
   line-height: 32px;
 `;
+
+

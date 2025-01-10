@@ -6,13 +6,13 @@ export const SafeArea = styled.SafeAreaView`
 
 export const Container = styled.View`
   flex: 1;
-  padding: 16px;
 `;
 
 export const SearchSection = styled.View`
-  margin-bottom: 8px;
-  gap: 8px;
   align-items: center;
+  border-bottom-width: 1px;
+  border-bottom-color: #ccc;
+  padding: 16px;
 `;
 
 export const ResultsSection = styled.View`
