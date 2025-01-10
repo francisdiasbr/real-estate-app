@@ -5,8 +5,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Home from './pages/Home';
 import PropertyDetails from './pages/PropertyDetails';
+import { RootStackParamList } from './navigation/types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RealEstateApp() {
   return (
@@ -25,6 +26,7 @@ export default function RealEstateApp() {
             component={PropertyDetails} 
             options={{
               headerShown: false,
+              title: 'Detalhes do Imóvel',
             }}
           />
         </Stack.Navigator>

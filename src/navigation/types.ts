@@ -3,10 +3,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Defina os types dos parâmetros das rotas
 export type RootStackParamList = {
-  PropertyDetails: {
-    _id: string;
-  };
   Home: undefined;
+  PropertyDetails: { propertyId: string };
 };
 
 // Defina o type da prop route
