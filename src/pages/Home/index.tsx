@@ -27,7 +27,7 @@ const SummaryCard = ({ summary }: { summary: string }) => {
       </S.SummaryText>
       <TouchableOpacity onPress={() => setExpanded(!expanded)}>
         <S.ExpandButton>
-          <Text style={{ color: '#0066CC' }}>
+          <Text style={{ color: '#FF385C' }}>
             {expanded ? 'Ver menos' : 'Ver mais'}
           </Text>
         </S.ExpandButton>
@@ -66,10 +66,9 @@ const HomeScreen = () => {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
-          <Button 
-            title="Pesquisar" 
-            onPress={handleSearch}
-          />
+          <S.Button onPress={handleSearch}>
+            <S.SearchButtonText>Pesquisar</S.SearchButtonText>
+          </S.Button>
         </S.SearchSection>
         <S.ResultsSection>
           {status === 'loading' && <ActivityIndicator />}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, Image } from 'react-native';
+import { Text, TouchableOpacity, Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -53,10 +53,33 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         
         <S.Title>{property.dados.title}</S.Title>
         <S.Price>{formatPrice()}</S.Price>
-        <S.AreaContainer>
-          <MaterialCommunityIcons name="set-square" size={14} color="#757575" />
-          <S.Area>{property.dados.features.area}m²</S.Area>
-        </S.AreaContainer>
+        
+        <S.FeaturesContainer>
+          <S.FeatureItem>
+            <MaterialCommunityIcons name="bed" size={16} color="#757575" />
+            <S.FeatureText>{property.dados.features.bedrooms}</S.FeatureText>
+          </S.FeatureItem>
+
+          <S.FeatureItem>
+            <MaterialCommunityIcons name="shower" size={16} color="#757575" />
+            <S.FeatureText>{property.dados.features.suites}</S.FeatureText>
+          </S.FeatureItem>
+
+          <S.FeatureItem>
+            <MaterialCommunityIcons name="toilet" size={16} color="#757575" />
+            <S.FeatureText>{property.dados.features.bathrooms}</S.FeatureText>
+          </S.FeatureItem>
+
+          <S.FeatureItem>
+            <MaterialCommunityIcons name="car" size={16} color="#757575" />
+            <S.FeatureText>{property.dados.features.parking_spots}</S.FeatureText>
+          </S.FeatureItem>
+
+          <S.FeatureItem>
+            <MaterialCommunityIcons name="set-square" size={16} color="#757575" />
+            <S.FeatureText>{property.dados.features.area}m²</S.FeatureText>
+          </S.FeatureItem>
+        </S.FeaturesContainer>
       </S.Container>
     </TouchableOpacity>
   );

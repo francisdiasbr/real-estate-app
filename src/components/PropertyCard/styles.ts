@@ -1,17 +1,5 @@
 import styled from 'styled-components/native';
 
-export const Area = styled.Text`
-  color: #757575;
-  font-size: 12px;
-  align-self: flex-end;
-`;
-
-export const AreaContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-end;
-  gap: 4px;
-`;
 
 export const BusinessTypeChip = styled.View<{ type: 'rent' | 'sale' | 'sale_rent' }>`
   background-color: #FF385C;
@@ -51,4 +39,22 @@ export const Title = styled.Text`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 8px;
+`;
+
+export const FeaturesContainer = styled.View`
+  flex-direction: row;
+  align-self: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+`;
+
+export const FeatureItem = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const FeatureText = styled.Text`
+  color: #757575;
+  font-size: 12px;
 `;

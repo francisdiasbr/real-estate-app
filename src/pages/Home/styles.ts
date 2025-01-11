@@ -52,3 +52,15 @@ export const ExpandButton = styled.View`
   align-items: center;
 `;
 
+export const Button = styled.TouchableOpacity`
+  background-color: #FF385C;
+  padding: 10px 20px;
+  border-radius: 6px;
+  align-items: center;
+`;
+
+export const SearchButtonText = styled.Text`
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+`;
