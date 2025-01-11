@@ -10,7 +10,8 @@ import {
 const initialState: SearchState = {
   results: [],
   status: 'idle',
-  error: null
+  error: null,
+  summary: ''
 };
 
 // Thunk
@@ -22,7 +23,7 @@ export const searchProperties = createAsyncThunk(
         '/search',
         searchParams
       );
-      return data.results;
+      return data;
     } catch (error) {
       throw new Error('Falha ao buscar propriedades');
     }
@@ -38,6 +39,7 @@ const searchPropertiesSlice = createSlice({
       state.results = [];
       state.status = 'idle';
       state.error = null;
+      state.summary = '';
     }
   },
   extraReducers: (builder) => {
@@ -48,7 +50,8 @@ const searchPropertiesSlice = createSlice({
       })
       .addCase(searchProperties.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.results = action.payload;
+        state.results = action.payload.results;
+        state.summary = action.payload.summary;
       })
       .addCase(searchProperties.rejected, (state, action) => {
         state.status = 'failed';
@@ -67,6 +70,8 @@ export const selectSearchStatus = (state: { searchProperties: SearchState }) =>
   state.searchProperties.status;
 export const selectSearchError = (state: { searchProperties: SearchState }) => 
   state.searchProperties.error;
+export const selectSearchSummary = (state: { searchProperties: SearchState }) => 
+  state.searchProperties.summary;
 
 // Reducer
 export default searchPropertiesSlice.reducer;

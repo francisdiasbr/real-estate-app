@@ -25,7 +25,6 @@ export const Container = styled.View`
   padding: 16px;
   background-color: #fff;
   border-radius: 8px;
-  margin: 8px;
   elevation: 2;
 `;
 

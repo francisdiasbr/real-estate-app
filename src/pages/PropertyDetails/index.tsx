@@ -5,6 +5,7 @@ import { ActivityIndicator, Text, TouchableOpacity, Modal, View, Dimensions, Sta
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch } from '../../app/store';
 import { 
   fetchProperty,
@@ -226,7 +227,7 @@ export default function PropertyDetails() {
           )}
         </View>
         <TouchableOpacity style={{
-          backgroundColor: '#FF5A5F',
+          backgroundColor: '#FF385C',
           paddingVertical: 10,
           paddingHorizontal: 20,
           borderRadius: 5

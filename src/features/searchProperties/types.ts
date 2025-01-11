@@ -1,5 +1,6 @@
 export interface SearchResponse {
   results: SearchResult[];
+  summary: string;
 }
 
 export interface SearchResult {
@@ -57,6 +58,7 @@ export interface SearchState {
   results: SearchResult[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  summary: string;
 }
 
 export interface SearchParams {
