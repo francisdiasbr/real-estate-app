@@ -102,7 +102,7 @@ eas build:configure
 3. Generate the build for iOS:
 
 ```
-eas build --platform ios
+eas build --platform ios --profile production
 ```
 
 
