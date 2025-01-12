@@ -46,6 +46,7 @@ export const RecordingTime = styled.Text`
   font-size: 16px;
   padding: 4px;
   max-height: 120px;
+  margin-right: 16px;
 `; 
 
 export const VoiceButton = styled.TouchableOpacity`
@@ -54,4 +55,13 @@ export const VoiceButton = styled.TouchableOpacity`
   align-items: center;
   width: 40px;
   height: 40px;
+`;
+
+export const RecordingContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-right: 18px;
+  width: 90px;
+  margin-left: 30px;
 `;

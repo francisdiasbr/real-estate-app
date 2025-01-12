@@ -72,12 +72,17 @@ npm install -g eas-cli
 eas build:configure
 ```
 
-3. Generate the build for iOS:
+3. Generate the build for iOS simulator:
+
+```
+eas build --profile development-simulator --platform ios
+```
+
+4. Generate the build for iOS device:
 
 ```
 eas build --profile development --platform ios
 ```
-
 
 
 ### Production

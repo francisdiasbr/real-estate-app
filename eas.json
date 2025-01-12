@@ -5,15 +5,24 @@
   },
   "build": {
     "development": {
+      "autoIncrement": true,
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "development-simulator": {
+      "autoIncrement": true,
       "developmentClient": true,
       "distribution": "internal",
-      "autoIncrement": true
+      "ios": {
+        "simulator": true
+      }
     },
     "preview": {
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "distribution": "internal"
     }
   },
   "submit": {

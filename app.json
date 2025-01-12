@@ -20,6 +20,10 @@
         "resizeMode": "contain",
         "backgroundColor": "#ffffff",
         "tabletImage": "./assets/splash.png"
+      },
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Permita que $(PRODUCT_NAME) acesse o microfone",
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
@@ -46,6 +50,14 @@
         }
       }
     },
-    "owner": "francisdiasbr"
+    "owner": "francisdiasbr",
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Permita que $(PRODUCT_NAME) acesse o microfone."
+        }
+      ]
+    ]
   }
 }

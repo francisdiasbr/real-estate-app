@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
@@ -68,6 +68,9 @@ export const SearchProperty: React.FC<SearchPropertyProps> = ({
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
+          staysActiveInBackground: true,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
         });
 
         const { recording } = await Audio.Recording.createAsync(
@@ -110,12 +113,16 @@ export const SearchProperty: React.FC<SearchPropertyProps> = ({
         <S.ButtonsContainer>
           <S.VoiceButton onPress={handleVoiceSearch}>
             {isListening ? (
-              <>
-                <ActivityIndicator color="#FF385C" size="small" />
+              <S.RecordingContainer>
+                <MaterialIcons 
+                  name="pause" 
+                  size={24} 
+                  color="#FF385C"
+                />
                 <S.RecordingTime>
                   {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}
                 </S.RecordingTime>
-              </>
+              </S.RecordingContainer>
             ) : (
               <MaterialIcons name="mic" size={24} color="#666" />
             )}
