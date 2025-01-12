@@ -8,7 +8,7 @@ class BaseService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = 'http://localhost:5000/api';
+    this.baseURL = 'https://real-estate-api-fd-6bb3a77d8089.herokuapp.com/api';
   }
 
   async delete<T>(

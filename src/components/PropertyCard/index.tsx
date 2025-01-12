@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, Image, View } from 'react-native';
+import { TouchableOpacity, Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,12 +11,18 @@ import * as S from './styles';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
+type BusinessType = 'aluguel' | 'venda' | 'venda_aluguel';
+
 interface PropertyCardProps {
   property: SearchResult;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const navigation = useNavigation<NavigationProp>();
+
+  if (!property?.dados) {
+    return null;
+  }
 
   const handlePress = () => {
     if (property.id) {
@@ -25,17 +31,19 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   };
 
   const formatPrice = () => {
-    const price = property.dados.business_type === 'rent' 
+    if (!property.dados.prices) return 'Preço sob consulta';
+    
+    const price = property.dados.business_type === 'aluguel' 
       ? property.dados.prices.rent_price 
       : property.dados.prices.sale_price;
-    return `R$ ${price?.toLocaleString('pt-BR')}`;
+    return price ? `R$ ${price.toLocaleString('pt-BR')}` : 'Preço sob consulta';
   };
 
   const getBusinessTypeLabel = () => {
-    switch (property.dados.business_type) {
-      case 'rent': return 'ALUGUEL';
-      case 'sale': return 'VENDA';
-      case 'sale_rent': return 'VENDA/ALUGUEL';
+    switch (property.dados.business_type as BusinessType) {
+      case 'aluguel': return 'ALUGUEL';
+      case 'venda': return 'VENDA';
+      case 'venda_aluguel': return 'VENDA/ALUGUEL';
       default: return '';
     }
   };
@@ -44,7 +52,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     <TouchableOpacity onPress={handlePress}>
       <S.Container>
         <S.PropertyImage
-          source={{ uri: mockPropertyImages[property.id][0] }}
+          source={{ uri: mockPropertyImages[property.id]?.[0] || '' }}
           resizeMode="cover"
         />
         <S.BusinessTypeChip type={property.dados.business_type}>
@@ -57,27 +65,27 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <S.FeaturesContainer>
           <S.FeatureItem>
             <MaterialCommunityIcons name="bed" size={16} color="#757575" />
-            <S.FeatureText>{property.dados.features.bedrooms}</S.FeatureText>
+            <S.FeatureText>{property.dados.features?.bedrooms || 0}</S.FeatureText>
           </S.FeatureItem>
 
           <S.FeatureItem>
             <MaterialCommunityIcons name="shower" size={16} color="#757575" />
-            <S.FeatureText>{property.dados.features.suites}</S.FeatureText>
+            <S.FeatureText>{property.dados.features?.suites || 0}</S.FeatureText>
           </S.FeatureItem>
 
           <S.FeatureItem>
             <MaterialCommunityIcons name="toilet" size={16} color="#757575" />
-            <S.FeatureText>{property.dados.features.bathrooms}</S.FeatureText>
+            <S.FeatureText>{property.dados.features?.bathrooms || 0}</S.FeatureText>
           </S.FeatureItem>
 
           <S.FeatureItem>
             <MaterialCommunityIcons name="car" size={16} color="#757575" />
-            <S.FeatureText>{property.dados.features.parking_spots}</S.FeatureText>
+            <S.FeatureText>{property.dados.features?.parking_spots || 0}</S.FeatureText>
           </S.FeatureItem>
 
           <S.FeatureItem>
             <MaterialCommunityIcons name="set-square" size={16} color="#757575" />
-            <S.FeatureText>{property.dados.features.area}m²</S.FeatureText>
+            <S.FeatureText>{property.dados.features?.area || 0}m²</S.FeatureText>
           </S.FeatureItem>
         </S.FeaturesContainer>
       </S.Container>

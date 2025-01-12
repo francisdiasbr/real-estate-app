@@ -1,22 +1,20 @@
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { TextInputProps } from 'react-native';
 import * as S from './styles';
 
-interface InputProps {
+interface InputProps extends TextInputProps {
   value: string;
   onChangeText: (text: string) => void;
 }
 
-export const Input: React.FC<InputProps> = ({ value, onChangeText }) => {
+export const Input: React.FC<InputProps> = ({ value, onChangeText, ...rest }) => {
   return (
-    <S.InputContainer>
-      <Ionicons name="search" size={20} color="#000" style={{ marginRight: 8 }} />
-      <S.Input
-        placeholder="Inicie sua busca"
-        value={value}
-        onChangeText={onChangeText}
-        placeholderTextColor="#000"
-      />
-    </S.InputContainer>
+    <S.Input
+      value={value}
+      onChangeText={onChangeText}
+      placeholder="Descreva o imóvel que procura..."
+      placeholderTextColor="#666"
+      {...rest}
+    />
   );
 };
