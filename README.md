@@ -19,15 +19,16 @@ In frontend:
 - The user can view the property details through the endpoint GET /property/:id, created in the backend
 
 
-[video here]
-
-
 ## Telas
 
 - Home
 - Property Details
 
-[images here]
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fba16862-ee6c-4156-9d75-805f7477d477" alt="Imagem 1" width="300">
+  <img src="https://github.com/user-attachments/assets/76df33e0-ebc8-4a7d-9c6a-f6833996084d" alt="Imagem 2" width="300">
+</p>
 
 ## Tecnologies
 
