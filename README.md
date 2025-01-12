@@ -19,16 +19,91 @@ In frontend:
 - The user can view the property details through the endpoint GET /property/:id, created in the backend
 
 
-## Telas
+## Features
+- Search for properties in a natural language using one Input field;
+- Voice recognition and transcription to perform search;
+
+## Screens
 
 - Home
 - Property Details
-
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/fba16862-ee6c-4156-9d75-805f7477d477" alt="Imagem 1" width="300">
   <img src="https://github.com/user-attachments/assets/76df33e0-ebc8-4a7d-9c6a-f6833996084d" alt="Imagem 2" width="300">
 </p>
+
+
+## How to Run
+
+### Development
+
+1. Clone the repository:
+
+```
+git clone git@github.com:francisdiasbr/turin-app-rn.git
+```
+
+2. Install the dependencies:
+
+```
+yarn install
+```
+
+3. Start the app:
+
+```
+yarn start
+```
+
+
+
+### Development Build (dev client):
+
+1. Install the Expo Application Services CLI (EAS):
+
+```
+npm install -g eas-cli
+```
+
+2. Configure the build environment:
+
+```
+eas build:configure
+```
+
+3. Generate the build for iOS:
+
+```
+eas build --profile development --platform ios
+```
+
+
+
+### Production
+
+1. Install the Expo Application Services CLI (EAS):
+
+```
+npm install -g eas-cli
+```
+
+2. Configure the build environment:
+
+```
+eas build:configure
+```
+
+3. Generate the build for iOS:
+
+```
+eas build --platform ios
+```
+
+
+https://docs.expo.dev/develop/development-builds/create-a-build/
+
+
 
 ## Tecnologies
 
@@ -36,6 +111,12 @@ App Structure:
 - React Native with Typescript in a Expo environment
 - React Navigation (Navigation between screens)
 - Redux (State Management)
+
+
+## Features
+
+- Search for properties in a natural language using one Input field;
+- Voice recognition to search for properties;
 
 
 ## Vision
@@ -64,3 +145,5 @@ The platform consists of two main components:
   - Detailed property views with all relevant information
 
 This platform bridges the gap between how people naturally think about their ideal property and how they search for it, making the entire real estate search process more intuitive, efficient, and enjoyable.
+
+
