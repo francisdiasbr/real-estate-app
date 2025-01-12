@@ -207,22 +207,46 @@ export default function PropertyDetails() {
         elevation: 5
       }}>
         <View>
-          {property.dados.business_type.includes('sale') && (
+          {property.dados.business_type === 'venda' && (
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-              Venda: R$ {property.dados.prices.sale_price?.toLocaleString()}
+              Venda: R$ {property.dados.prices.sale_price?.toLocaleString('pt-BR')}
             </Text>
           )}
-          {property.dados.business_type.includes('rent') && (
+          {property.dados.business_type === 'aluguel' && (
             <>
               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-                Aluguel: R$ {property.dados.prices.rent_price?.toLocaleString()}/mês
+                Aluguel: R$ {property.dados.prices.rent_price?.toLocaleString('pt-BR')}/mês
               </Text>
-              <Text style={{ fontSize: 14, color: '#666' }}>
-                Condomínio: R$ {property.dados.prices.condo_fee?.toLocaleString()}/mês
+              {property.dados.prices.condo_fee && (
+                <Text style={{ fontSize: 14, color: '#666' }}>
+                  Condomínio: R$ {property.dados.prices.condo_fee?.toLocaleString('pt-BR')}/mês
+                </Text>
+              )}
+              {property.dados.prices.property_tax && (
+                <Text style={{ fontSize: 14, color: '#666' }}>
+                  IPTU: R$ {property.dados.prices.property_tax?.toLocaleString('pt-BR')}/ano
+                </Text>
+              )}
+            </>
+          )}
+          {property.dados.business_type === 'venda_aluguel' && (
+            <>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                Venda: R$ {property.dados.prices.sale_price?.toLocaleString('pt-BR')}
               </Text>
-              <Text style={{ fontSize: 14, color: '#666' }}>
-                IPTU: R$ {property.dados.prices.property_tax?.toLocaleString()}/ano
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                Aluguel: R$ {property.dados.prices.rent_price?.toLocaleString('pt-BR')}/mês
               </Text>
+              {property.dados.prices.condo_fee && (
+                <Text style={{ fontSize: 14, color: '#666' }}>
+                  Condomínio: R$ {property.dados.prices.condo_fee?.toLocaleString('pt-BR')}/mês
+                </Text>
+              )}
+              {property.dados.prices.property_tax && (
+                <Text style={{ fontSize: 14, color: '#666' }}>
+                  IPTU: R$ {property.dados.prices.property_tax?.toLocaleString('pt-BR')}/ano
+                </Text>
+              )}
             </>
           )}
         </View>
@@ -233,7 +257,7 @@ export default function PropertyDetails() {
           borderRadius: 5
         }}>
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
-            RESERVE
+            AGENDAR
           </Text>
         </TouchableOpacity>
       </SafeAreaView>
