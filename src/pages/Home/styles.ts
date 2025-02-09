@@ -46,3 +46,30 @@ export const SearchButtonText = styled.Text`
   font-size: 16px;
   font-weight: bold;
 `;
+
+export const EmptyStateContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+export const EmptyStateIcon = styled.Text`
+  font-size: 48px;
+  margin-bottom: 16px;
+`;
+
+export const EmptyStateTitle = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: center;
+`;
+
+export const EmptyStateText = styled.Text`
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  line-height: 24px;
+`;
