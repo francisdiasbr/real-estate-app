@@ -1,5 +1,7 @@
 # Intelligent Real Estate Search Platform
 
+[![API Status](https://img.shields.io/website?url=https://varying-lynde-francisdiasbr-0720cb77.koyeb.app/&style=flat-square&label=API%20Status)](https://varying-lynde-francisdiasbr-0720cb77.koyeb.app/)
+
 Read in Portuguese: [README.pt.md](README.pt.md)
 
 ## Description
@@ -38,24 +40,17 @@ In frontend:
 
 ### Development
 
-1. Clone the repository:
-
-```
-git clone git@github.com:francisdiasbr/turin-app-rn.git
-```
-
-2. Install the dependencies:
+1. Install the dependencies:
 
 ```
 yarn install
 ```
 
-3. Start the app:
+2. Start the app:
 
 ```
 yarn start
 ```
-
 
 
 ### Development Build (dev client):
@@ -72,34 +67,26 @@ npm install -g eas-cli
 eas build:configure
 ```
 
-3. Generate the build for iOS simulator:
+3. Generate the build for:
+- iOS simulator:
 
 ```
 eas build --profile development-simulator --platform ios
 ```
 
-4. Generate the build for iOS device:
+- iOS device:
 
 ```
 eas build --profile development --platform ios
 ```
 
-
-### Production
-
-1. Install the Expo Application Services CLI (EAS):
+- Preview Build
 
 ```
-npm install -g eas-cli
+eas build --profile preview --platform ios
 ```
 
-2. Configure the build environment:
-
-```
-eas build:configure
-```
-
-3. Generate the build for iOS:
+- Production Build
 
 ```
 eas build --platform ios --profile production
@@ -150,5 +137,40 @@ The platform consists of two main components:
   - Detailed property views with all relevant information
 
 This platform bridges the gap between how people naturally think about their ideal property and how they search for it, making the entire real estate search process more intuitive, efficient, and enjoyable.
+
+
+## Tipos de Build
+
+### Development Simulator Build (`eas build --profile development-simulator`)
+- **Quando usar:** Para testes no simulador iOS
+- **Características:**
+  - Específico para desenvolvimento no simulador
+  - Não requer dispositivo físico
+  - Ideal para testes rápidos durante o desenvolvimento
+
+### Development Build (`eas build --profile development`)
+- **Quando usar:** Durante o desenvolvimento ativo do app
+- **Características:**
+  - Build Ad Hoc (requer registro de dispositivos)
+  - Para testes em dispositivos físicos
+  - Inclui ferramentas de desenvolvimento e debug
+  - Distribuição interna limitada
+
+### Preview Build (`eas build --profile preview`)
+- **Quando usar:** Para testes beta e validação
+- **Características:**
+  - Distribuição via TestFlight
+  - Não requer registro de dispositivos
+  - Ideal para testes com usuários beta
+  - Permite até 10.000 testadores
+
+### Production Build (`eas build --profile production`)
+- **Quando usar:** Para lançamento na App Store
+- **Características:**
+  - Versão otimizada e finalizada
+  - Distribuição via App Store
+  - Para usuários finais
+  - Requer revisão completa da Apple
+
 
 
