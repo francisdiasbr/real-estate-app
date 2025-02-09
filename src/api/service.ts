@@ -8,7 +8,7 @@ class BaseService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = 'https://real-estate-api-fd-6bb3a77d8089.herokuapp.com/api';
+    this.baseURL = 'https://varying-lynde-francisdiasbr-0720cb77.koyeb.app/api';
   }
 
   async delete<T>(
@@ -72,14 +72,15 @@ class BaseService {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        const error = new Error(
-          `HTTP error! status: ${response.status}`
-        ) as Error & {
+        const errorMessage = errorData?.message || `HTTP error! status: ${response.status}`;
+        const error = new Error(errorMessage) as Error & {
           response: Response;
           data?: unknown;
+          status?: number;
         };
         error.response = response;
         error.data = errorData;
+        error.status = response.status;
         throw error;
       }
 
@@ -93,7 +94,11 @@ class BaseService {
     } catch (error) {
       console.error(
         `API call error with ${method} request from url ${url}:`,
-        error
+        error instanceof Error ? {
+          message: error.message,
+          status: (error as any).status,
+          data: (error as any).data
+        } : error
       );
       throw error;
     }
