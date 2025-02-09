@@ -22,7 +22,6 @@
         "tabletImage": "./assets/splash.png"
       },
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Permita que $(PRODUCT_NAME) acesse o microfone",
         "UIBackgroundModes": ["audio"]
       }
     },
@@ -35,7 +34,11 @@
         "image": "./assets/splash.png",
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "RECORD_AUDIO",
+        "MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./assets/appicon.png"
@@ -55,7 +58,7 @@
       [
         "expo-av",
         {
-          "microphonePermission": "Permita que $(PRODUCT_NAME) acesse o microfone."
+          "microphonePermission": "O app precisa do microfone para permitir que você procure imóveis usando comandos de voz. Sua voz será processada apenas durante a busca para encontrar as propriedades que correspondem aos seus critérios."
         }
       ]
     ]

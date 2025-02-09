@@ -1,8 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { ActivityIndicator } from 'react-native';
+// import { ActivityIndicator } from 'react-native';
+import { Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 import { AppDispatch } from '../../app/store';
 import { searchProperties } from '../../features/searchProperties/searchPropertiesSlice';
@@ -25,16 +27,27 @@ export const SearchProperty: React.FC<SearchPropertyProps> = ({
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [recordedUri, setRecordedUri] = useState<string | null>(null);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
-    if (isListening) {
-      timer = setInterval(() => {
-        setRecordingDuration(prev => prev + 1);
-      }, 1000);
-    } else {
-      setRecordingDuration(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+useEffect(() => {
+  if (isListening) {
+    intervalRef.current = setInterval(() => {
+      setRecordingDuration((prev) => prev + 1);
+    }, 1000);
+  } else {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
-    return () => clearInterval(timer);
+    setRecordingDuration(0);
+  }
+
+  return () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+        intervalRef.current = null; // Limpeza no cleanup
+      }
+    };
   }, [isListening]);
 
   const handleSearch = () => {
@@ -46,40 +59,88 @@ export const SearchProperty: React.FC<SearchPropertyProps> = ({
     }
   };
 
+  const checkPermissions = async () => {
+    try {
+      console.log('Verificando permissões de áudio...');
+      const { status } = await Audio.requestPermissionsAsync();
+      console.log('Status da permissão:', status);
+      
+      if (status !== 'granted') {
+        console.log('Permissão não concedida');
+        Alert.alert(
+          'Permissão necessária',
+          'O app precisa de acesso ao microfone para realizar buscas por voz.'
+        );
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error('Erro ao verificar permissões:', error);
+      return false;
+    }
+  };
+
   const handleVoiceSearch = async () => {
     if (isListening) {
       try {
+        console.log('Parando gravação...');
         if (!recording) return;
+        
         setIsListening(false);
         await recording.stopAndUnloadAsync();
         const uri = recording.getURI();
+        console.log('URI da gravação:', uri);
+        
+        if (!uri) return;
+        
+        const fileInfo = await FileSystem.getInfoAsync(uri);
+        console.log('Informações do arquivo:', fileInfo);
+        
         setRecordedUri(uri);
         setRecording(null);
-        console.log('Gravação finalizada em:', uri);
 
-        const transcription = await transcribeAudio(uri);
-        setSearchQuery(transcription);
+        if (uri) {
+          console.log('Iniciando transcrição...');
+          try {
+            const transcription = await transcribeAudio(uri);
+            console.log('Transcrição concluída:', transcription);
+            setSearchQuery(transcription);
+          } catch (transcriptionError) {
+            console.error('Erro específico da transcrição:', transcriptionError);
+            Alert.alert('Erro', 'Não foi possível transcrever o áudio');
+          }
+        }
       } catch (err) {
-        console.error('Falha ao parar gravação', err);
+        console.error('Erro ao parar gravação:', err);
       }
     } else {
       try {
-        await Audio.requestPermissionsAsync();
+        const hasPermission = await checkPermissions();
+        if (!hasPermission) return;
+
+        console.log('Configurando modo de áudio...');
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
           staysActiveInBackground: true,
           interruptionModeIOS: InterruptionModeIOS.DoNotMix,
           interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false
         });
 
+        console.log('Iniciando gravação...');
         const { recording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY
+          Audio.RecordingOptionsPresets.HIGH_QUALITY,
+          (status) => console.log('Status da gravação:', status),
+          100
         );
+        
         setRecording(recording);
         setIsListening(true);
+        console.log('Gravação iniciada com sucesso');
       } catch (err) {
-        console.error('Falha ao iniciar gravação', err);
+        console.error('Erro ao iniciar gravação:', err);
       }
     }
   };
