@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, Modal, View, Dimensions, StatusBar } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, Modal, View, Dimensions, StatusBar, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +34,9 @@ export default function PropertyDetails() {
   const [showAdModal, setShowAdModal] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const propertyImages = property ? mockPropertyImages[property.id] : [];
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProperty(route.params.propertyId));
@@ -46,6 +49,28 @@ export default function PropertyDetails() {
   const renderItem = ({ item }: { item: string }) => (
     <S.CarouselImage source={{ uri: item }} resizeMode="cover" />
   );
+
+  const handleScheduleSubmit = async () => {
+    // Validação básica de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      Alert.alert('Erro', 'Por favor, insira um email válido');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    // Simulando uma chamada de API
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setShowScheduleModal(false);
+      setEmail('');
+      Alert.alert(
+        'Sucesso', 
+        'Em breve nossos especialistas entrarão em contato!'
+      );
+    }, 1500);
+  };
 
   if (status === 'loading') {
     return <ActivityIndicator size="large" color="#d7d7d7" />;
@@ -168,7 +193,7 @@ export default function PropertyDetails() {
         <Modal
           visible={showAdModal}
           transparent
-          animationType="slide"
+          animationType="fade"
           onRequestClose={() => setShowAdModal(false)}
         >
           <S.ModalOverlay>
@@ -182,6 +207,60 @@ export default function PropertyDetails() {
                 <S.ModalTitle>Sobre este imóvel</S.ModalTitle>
                 <S.ModalText>{property.anuncio}</S.ModalText>
               </S.ModalScrollView>
+            </S.ModalContent>
+          </S.ModalOverlay>
+        </Modal>
+
+        <Modal
+          visible={showScheduleModal}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowScheduleModal(false)}
+        >
+          <S.ModalOverlay>
+            <S.ModalContent>
+              <S.ModalHeader>
+                <S.ModalCloseButton onPress={() => setShowScheduleModal(false)}>
+                  <Text style={{ fontSize: 20 }}>✕</Text>
+                </S.ModalCloseButton>
+              </S.ModalHeader>
+              
+              <View style={{ padding: 10 }}>
+                <Text style={{ 
+                  fontSize: 20, 
+                  fontWeight: 'bold', 
+                  textAlign: 'center',
+                  marginBottom: 8
+                }}>
+                  Nossos especialistas entrarão em contato com você
+                </Text>
+                
+                <S.Input
+                  placeholder="Seu email"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  placeholderTextColor="#999"
+                />
+                
+                <S.SubmitButton
+                  onPress={handleScheduleSubmit}
+                  disabled={isSubmitting}
+                  style={{
+                    opacity: isSubmitting ? 0.7 : 1,
+                    marginTop: 8
+                  }}
+                >
+                  <Text style={{ 
+                    color: '#fff', 
+                    fontSize: 16, 
+                    fontWeight: '600'
+                  }}>
+                    {isSubmitting ? 'Enviando...' : 'Enviar'}
+                  </Text>
+                </S.SubmitButton>
+              </View>
             </S.ModalContent>
           </S.ModalOverlay>
         </Modal>
@@ -250,12 +329,15 @@ export default function PropertyDetails() {
             </>
           )}
         </View>
-        <TouchableOpacity style={{
-          backgroundColor: '#FF385C',
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-          borderRadius: 5
-        }}>
+        <TouchableOpacity 
+          style={{
+            backgroundColor: '#FF385C',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 5
+          }}
+          onPress={() => setShowScheduleModal(true)}
+        >
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
             AGENDAR
           </Text>
